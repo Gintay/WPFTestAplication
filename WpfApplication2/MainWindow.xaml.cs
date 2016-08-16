@@ -62,8 +62,6 @@ namespace WpfApplication2
 
 
 
-
-
         }
     }
     /// <summary>
