@@ -108,6 +108,12 @@
   <ItemGroup>
     <Resource Include="TESTLogo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProfileManagerLib\ProfileManagerLib.csproj">
+      <Project>{1452a3ec-0b9a-4cbf-a4bc-0e43ce506248}</Project>
+      <Name>ProfileManagerLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

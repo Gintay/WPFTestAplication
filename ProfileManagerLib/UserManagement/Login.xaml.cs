@@ -17,22 +17,15 @@ namespace ProfileManagerLib
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class Login : Window, iManagerInterface
     {
-        private string _connectionString;
-        /// <summary>
-        /// Set connection string
-        /// </summary>
-        public string ConnectionString { set { _connectionString = value; } }
-
+        private User LogedUser;
         /// <summary>
         /// Constructor for login window object
         /// </summary>
-        /// <param name="connectionString">complete connection string. Value is set to null by deffault</param>
-        public Login(string connectionString = null)
+        public Login()
         {
             InitializeComponent();
-            this._connectionString = connectionString;
         }
         /// <summary>
         /// Evaluates login attempt result
@@ -42,7 +35,7 @@ namespace ProfileManagerLib
             // this part of code is selfexplanatory
             // it pops an error message if login is usuccessful
             if (String.IsNullOrEmpty(this.tbLogin.Text) ||
-               String.IsNullOrEmpty(this.pbPassword.Password) ||
+               /*String.IsNullOrEmpty(this.pbPassword.Password) ||*/
                isNotValid(this.tbLogin.Text, this.pbPassword.Password))
             {
                 MessageBox.Show("Wrong username or password!", "Login failed!", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -61,11 +54,16 @@ namespace ProfileManagerLib
         /// <returns>true if comparison failed, otherwise false</returns>
         private bool isNotValid(string login, string password)
         {
-            bool isNotValid = true;
-            // connect to database
-            // validate login
-            // validate password
-            // update isNotValid to false if login and password are ok
+            bool isNotValid;
+            if (User.HasConnectionStringDefined())
+            {
+                // connect to database
+                // validate login
+                // validate password
+                // update isNotValid to false if login and password are ok
+                isNotValid = true;
+            }
+            else isNotValid = false;
             return isNotValid;
         }
 
@@ -78,11 +76,51 @@ namespace ProfileManagerLib
             this.Evaluate();
         }
 
-        public bool? Run()
+        /// <summary>
+        /// Default dialog init method
+        /// </summary>
+        /// <returns>Loged User or null if login usuccessfull</returns>
+        public User Run()
         {
-            return String.IsNullOrEmpty(this._connectionString) ?
-                    null :
-                    this.ShowDialog();
+            var rez = this.ShowDialog();
+            if (rez.HasValue && rez == true)
+            {
+                LogedUser = new User();
+                LogedUser.Login = tbLogin.Text;
+            }
+            else LogedUser = null;
+            return LogedUser;
         }
+
+        private void tbLogin_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbLogin.SelectAll();
+        }
+
+        private void tbLogin_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            tbLogin.SelectAll();
+        }
+
+        private void tbLogin_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            tbLogin.SelectAll();
+        }
+
+        private void pbPassword_GotFocus(object sender, RoutedEventArgs e)
+        {
+            pbPassword.SelectAll();
+        }
+
+        private void pbPassword_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            pbPassword.SelectAll();
+        }
+
+        private void pbPassword_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            pbPassword.SelectAll();
+        }
+
     }
 }

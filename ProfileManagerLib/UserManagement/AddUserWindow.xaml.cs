@@ -1,24 +1,16 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProfileManagerLib
 {
     /// <summary>
     /// Interaction logic for AddUserWindow.xaml
     /// </summary>
-    public partial class AddUserWindow : Window
+    public partial class AddUserWindow : Window,iManagerInterface
     {
         private bool Admin;
 
@@ -31,7 +23,7 @@ namespace ProfileManagerLib
             pbPassword.BorderBrush = Brushes.Red;
             pbRepeatPassword.BorderBrush = Brushes.Red;
             this.Admin = false;
-            this.imgProfileImage.Source = new BitmapImage(new Uri(@"E:\Projects\TestProject\Big\ProfileManager\tshirt.jpeg"));
+            this.imgProfileImage.Source = null;
             //this.inputIsNotValid = true;
         }
 

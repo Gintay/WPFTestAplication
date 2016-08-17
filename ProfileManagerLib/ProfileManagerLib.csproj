@@ -52,15 +52,15 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AddUserWindow.xaml">
+    <Page Include="UserManagement\AddUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditUserWindow.xaml">
+    <Page Include="UserManagement\EditUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Login.xaml">
+    <Page Include="UserManagement\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -68,26 +68,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddUserWindow.xaml.cs">
+    <Compile Include="ManagerInterface.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserManagement\AddUserWindow.xaml.cs">
       <DependentUpon>AddUserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditUserWindow.xaml.cs">
+    <Compile Include="UserManagement\EditUserWindow.xaml.cs">
       <DependentUpon>EditUserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Login.xaml.cs">
+    <Compile Include="UserManagement\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Manager.xaml">
+    <Page Include="UserManagement\Manager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager.xaml.cs">
+    <Compile Include="UserManagement\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -117,7 +119,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Properties\tshirt.jpeg" />
+    <Resource Include="UserManagement\tshirt.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

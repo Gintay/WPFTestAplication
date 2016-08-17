@@ -1,36 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProfileManagerLib
 {
     /// <summary>
-    /// Interaction logic for Manager.xaml
+    /// Interaction logic for ProfileManager.xaml
     /// </summary>
-    public partial class Manager : Window
+    public partial class ProfileManagerWindow : Window, iManagerInterface
     {
         //
         private Dictionary<string, User> Users;
-        int nextId = 0;
-        public Manager()
+        private User CurrentLogedUser;
+        private int NextId;
+
+        public ProfileManagerWindow(Dictionary<string, User> users, User currentLogedUser, int nextId)
         {
             InitializeComponent();
+            Users = users;
+            CurrentLogedUser = currentLogedUser;
+            NextId = nextId;
 
-            Users = new Dictionary<string, User>();
-            var user = new User() { Id = nextId++, Login = "Jarik", Admin = true };//for test purpose
-            user.SetImage(new Image() { Source = new BitmapImage(new Uri(@"E:\Projects\TestProject\Big\ProfileManager\tshirt.jpeg")) });//for test purpose
-            Users.Add(user.Login, user);//for test purpose
+            //Bind datagrid to Users
             dtgUsers.ItemsSource = Users.Values;
+        }
+        public User Run()
+        {
+            if (CurrentLogedUser == null)
+            {
+                this.Login();
+            }
+            else
+            {
+                var rez = this.ShowDialog();
+            }
+
+            return CurrentLogedUser;
+        }
+        /// <summary>
+        /// Login user
+        /// </summary>
+        private void Login()
+        {
+            var diag = new Login();
+            var rez = diag.Run();
+            if (rez != null)
+            {
+                CurrentLogedUser = Users[rez.Login];
+            }
+            else
+            {
+
+            }
         }
         /// <summary>
         /// Add new User
@@ -47,7 +71,7 @@ namespace ProfileManagerLib
                 Users.Add(newUser.Login, newUser);
                 //update database records
                 Users[newUser.Login].SetPassword("");
-                Users[newUser.Login].Id = nextId++;
+                Users[newUser.Login].Id = NextId++;
                 dtgUsers.ItemsSource = null;
                 dtgUsers.ItemsSource = Users.Values;
             }
@@ -88,7 +112,8 @@ namespace ProfileManagerLib
         }
         private void SelectUser()
         {
-
+            if (dtgUsers.SelectedIndex < 0) return;
+            var user = Users[dtgUsers.Items[dtgUsers.SelectedIndex].ToString()];
         }
 
         private void bNew_Click(object sender, RoutedEventArgs e)
@@ -105,42 +130,5 @@ namespace ProfileManagerLib
         {
             EditUser();
         }
-    }
-
-    public class User
-    {
-        private static string ConnectionString;
-
-        public int Id { set; get; }
-        public string Login { set; get; }
-        public bool Admin { set; get; }
-        private string Password = "";
-        private Image ProfileImage;
-        public void SetPassword(string value)
-        {
-            Password = value;
-        }
-        public string GetPassword()
-        {
-            return Password;
-        }
-        public override string ToString()
-        {
-            return this.Login;
-        }
-
-        public void SetImage(Image value)
-        {
-            ProfileImage = value;
-        }
-        public Image GetImage()
-        {
-            return ProfileImage;
-        }
-        public void SetConnection(string con)
-        {
-            ConnectionString = con;
-        }
-
     }
 }

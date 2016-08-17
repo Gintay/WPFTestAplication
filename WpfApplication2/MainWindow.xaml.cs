@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProfileManagerLib;
 
 
 //Документація
@@ -78,10 +79,14 @@ namespace WpfApplication2
             image.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + @"\Images\tmp.png"));
         }
     }
+   
     public partial class MainWindow : Window
     {
         //Шлях до виконавчого файлу
         string exepath = Environment.CurrentDirectory;
+        private User CurrentLogedUser;
+        ProfileManager Manager;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -92,12 +97,30 @@ namespace WpfApplication2
             //Показовий клас та метод категорії
             CategoryTMP c = new CategoryTMP();
             AddCategoryToCategoryList(c);
+            //Init Profile ProfileManager
+            Manager = ProfileManager.GetInstance();
 
             //Показовий метод відображення профілю
-            Image im = new Image();
-            im.Source = new BitmapImage(new Uri(exepath + @"\Images\tmp.png"));
-            RefreshProfile("Антон Гвидон", "1956", im);
+            //Славік: в упор тут метода не бачу ))) Закоментував!
+            //Image im = new Image();
+            //im.Source = new BitmapImage(new Uri(exepath + @"\Images\tmp.png"));
+            //RefreshProfile("Антон Гвидон", "1956", im);
         }
+
+        private void showProfile()
+        {
+            if (CurrentLogedUser == null)
+            {
+                //try to login
+                CurrentLogedUser = Manager.Run();
+            }
+            //if login was success
+            if (CurrentLogedUser != null)
+                RefreshProfile(CurrentLogedUser.Login, CurrentLogedUser.BirthYear, CurrentLogedUser.GetImage());
+            else
+                Application.Current.Shutdown();
+        }
+
         /// <summary>
         /// Завантаження картинок в фронтенді
         /// </summary>
@@ -275,6 +298,28 @@ namespace WpfApplication2
             NameProfileTextBlock.Text = Name;
             YearProfileTextBlock.Text = Date;
             LogoImage.ImageSource = logo.Source;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var diag = new AddUserWindow();
+            var rez = diag.Run();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+            var rez = Manager.Run();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var rez = Manager.Run();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            showProfile();
         }
 
     }

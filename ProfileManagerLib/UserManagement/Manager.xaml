@@ -1,4 +1,4 @@
-﻿<Window x:Name="wndProfileManager" x:Class="ProfileManagerLib.Manager"
+﻿<Window x:Name="wndProfileManager" x:Class="ProfileManagerLib.ProfileManagerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Profile manager" Height="300" Width="351">

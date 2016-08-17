@@ -30,6 +30,13 @@ D:\GitTestProject\WPFAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb
 E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\WpfApplication2.exe.config
 E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\WpfApplication2.exe
 E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\WpfApplication2.pdb
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.dll
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.SqlServer.dll
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\ProfileManagerLib.dll
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\ProfileManagerLib.pdb
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.xml
+E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.SqlServer.xml
+E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\WpfApplication2.csprojResolveAssemblyReference.cache
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\MainWindow.baml
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\MainWindow.g.cs
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\App.g.cs
@@ -39,7 +46,3 @@ E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\WpfApplication2.Properties
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\WpfApplication2.csproj.GenerateResource.Cache
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\WpfApplication2.exe
 E:\Projects\TestProject\Big\WpfApplication2\obj\Debug\WpfApplication2.pdb
-E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.dll
-E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.SqlServer.dll
-E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.xml
-E:\Projects\TestProject\Big\WpfApplication2\bin\Debug\EntityFramework.SqlServer.xml

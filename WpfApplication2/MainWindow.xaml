@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApplication2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="860" Width="1332" WindowStartupLocation="Manual" WindowState="Maximized">
+        Title="MainWindow" Height="860" Width="1332" WindowStartupLocation="Manual" WindowState="Maximized" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Background" Value="White"/>
@@ -255,7 +255,7 @@ RenderingBias="Quality" />
                                         </StackPanel>
                                     </Grid>
                                 </Button>
-                                <Button Style="{StaticResource AdminButton}">
+                                <Button Style="{StaticResource AdminButton}" Click="Button_Click">
                                     <Grid>
                                         <StackPanel>
                                             <Image Name="AddUserButtonImage" Height="150" />
@@ -263,7 +263,7 @@ RenderingBias="Quality" />
                                         </StackPanel>
                                     </Grid>
                                 </Button>
-                                <Button Style="{StaticResource AdminButton}">
+                                <Button Style="{StaticResource AdminButton}" Click="Button_Click_1">
                                     <Grid>
                                         <StackPanel>
                                             <Image Name="EditUserButtonImage" Height="150" />
@@ -271,7 +271,7 @@ RenderingBias="Quality" />
                                         </StackPanel>
                                     </Grid>
                                 </Button>
-                                <Button Style="{StaticResource AdminButton}">
+                                <Button Style="{StaticResource AdminButton}" Click="Button_Click_2">
                                     <Grid>
                                         <StackPanel>
                                             <Image Name="DeleteUserButtonImage" Height="150" />
