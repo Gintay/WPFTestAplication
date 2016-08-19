@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 E:\Projects\TestProject\Big\WpfApplication2\App.xaml
-11151548125
-
-101175172580
-161147441475
-MainWindow.xaml;
+61671040968
+31230542900
+28-615855519
+17-734549755
+MainWindow.xaml;UserManager\EditUserWindow.xaml;UserManager\LoginUserWindow.xaml;UserManager\NewUserWindow.xaml;UserManager\RemoveUserWindow.xaml;UserManager\UserListWindow.xaml;
 
 False
 

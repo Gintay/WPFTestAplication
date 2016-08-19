@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ProfileManagerLib;
 
 
 //Документація
@@ -63,6 +62,8 @@ namespace WpfApplication2
 
 
 
+
+
         }
     }
     /// <summary>
@@ -79,13 +80,16 @@ namespace WpfApplication2
             image.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + @"\Images\tmp.png"));
         }
     }
-   
+
+
     public partial class MainWindow : Window
     {
         //Шлях до виконавчого файлу
         string exepath = Environment.CurrentDirectory;
-        private User CurrentLogedUser;
-        ProfileManager Manager;
+        //Path to deffault image... just in case...
+        string deffaultImagePath = @"\Images\tmp.png";
+        //Aplication tracks loged in user
+        Users LogedUser = null;
 
         public MainWindow()
         {
@@ -97,28 +101,10 @@ namespace WpfApplication2
             //Показовий клас та метод категорії
             CategoryTMP c = new CategoryTMP();
             AddCategoryToCategoryList(c);
-            //Init Profile ProfileManager
-            Manager = ProfileManager.GetInstance();
 
-            //Показовий метод відображення профілю
-            //Славік: в упор тут метода не бачу ))) Закоментував!
-            //Image im = new Image();
-            //im.Source = new BitmapImage(new Uri(exepath + @"\Images\tmp.png"));
-            //RefreshProfile("Антон Гвидон", "1956", im);
-        }
-
-        private void showProfile()
-        {
-            if (CurrentLogedUser == null)
-            {
-                //try to login
-                CurrentLogedUser = Manager.Run();
-            }
-            //if login was success
-            if (CurrentLogedUser != null)
-                RefreshProfile(CurrentLogedUser.Login, CurrentLogedUser.BirthYear, CurrentLogedUser.GetImage());
-            else
-                Application.Current.Shutdown();
+            TryToAdDeffaultUserCategories();
+            TryToAddDeffaultUser();
+           
         }
 
         /// <summary>
@@ -289,37 +275,179 @@ namespace WpfApplication2
         }
         /// <summary>
         /// Поновленя інформації в профілі
+        /// Edit by bigDrone: taken params redone to none since profile is refreshed only for currently loged-in user, logics updated accordingly
         /// </summary>
-        /// <param name="Name">Ім'я та прізвище яке буде виводитись</param>
-        /// <param name="Date">Дата народження</param>
-        /// <param name="logo">Фото</param>
-        void RefreshProfile(string Name, string Date, Image logo)
+        void RefreshProfile()
         {
-            NameProfileTextBlock.Text = Name;
-            YearProfileTextBlock.Text = Date;
-            LogoImage.ImageSource = logo.Source;
-        }
+            //Check if Loged user is defined
+            if (LogedUser == null)
+            {
+                //run login window
+                var rezult = new UserManager.LoginUserWindow().Run();
+                //if login was not success aplication is shutdown
+                if(rezult==null)
+                {
+                    //LogedUser = LogWithGuest();
+                    this.Close();
+                    return;
+                }
+                else//Loged user is updated
+                {
+                    LogedUser = rezult;
+                }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+            }
+
+            NameProfileTextBlock.Text = LogedUser.user_login;// LogedUser.user_name;
+            YearProfileTextBlock.Text = "Рік не визначений";//LogedUser.user_birthYear;
+            //try
+            //{
+            //    LogoImage.ImageSource = new BitmapImage(new Uri(exepath + LogedUser.user_image));
+            //}
+            //catch (Exception any)
+            //{
+            //    LogoImage.ImageSource = new BitmapImage(new Uri(exepath + deffaultImagePath));
+            //}
+            LogoImage.ImageSource = new BitmapImage(new Uri(exepath + deffaultImagePath));
+        }
+        /// <summary>
+        /// bigDrone Method:
+        /// Method that generates deffault user categories if there are none in User_categories set
+        /// </summary>
+        void TryToAdDeffaultUserCategories()
         {
-            var diag = new AddUserWindow();
-            var rez = diag.Run();
-        }
+            var context = new MyTestDatabaseEntities();
+            var usr_cat_count = context.Users_category.Count();
+            if(usr_cat_count<1)
+            {
+                var usr_cat_col = context.Set<Users_category>();
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+                //Add deffault categories set
+                usr_cat_col.Add(new Users_category() { user_category_name = "SuperAdmin", admin = true });
+                usr_cat_col.Add(new Users_category(){ user_category_name = "Admin",admin = true});
+                usr_cat_col.Add(new Users_category() { user_category_name = "User", admin = false });
+                usr_cat_col.Add(new Users_category() { user_category_name = "ReservedForUser01", admin = false });
+                usr_cat_col.Add(new Users_category() { user_category_name = "ReservedForUser02", admin = false });
+                usr_cat_col.Add(new Users_category() { user_category_name = "ReservedForUser03", admin = false });
+                usr_cat_col.Add(new Users_category() { user_category_name = "Guest", admin = false });
+
+                context.SaveChanges();
+            }
+            
+        }
+        /// <summary>
+        /// bigDrone Method:
+        /// Method that generates deffault admin User if no users or no admins are in Users set
+        /// </summary>
+        void TryToAddDeffaultUser()
         {
-
-            var rez = Manager.Run();
+            var context = new MyTestDatabaseEntities();
+            var adminsCount = context.Users.Where(usr => usr.Users_category.admin == true).Count();
+            var guestsCount = context.Users.Where(usr => usr.Users_category.user_category_name == "Guest").Count();
+            var set = context.Set<Users>();
+            if (adminsCount < 1)
+            {
+                //Define deffault admin
+                Users user = new Users();
+                //user.user_name = "Deffault Admin";
+                user.user_login = "admin";
+                //user.user_birthYear = DateTime.Today.Year.ToString();
+                user.user_pass = "";
+                user.user_category = context.Users_category.Where(cat => cat.admin == true).FirstOrDefault().user_category_id;
+                //user.user_image = deffaultImagePath;
+                set.Add(user);
+            }
+            if (guestsCount < 1)
+            {
+                Users guest = new Users();
+                //guest.user_name = "Deffault Admin";
+                guest.user_login = "guest";
+                //guest.user_birthYear = DateTime.Today.Year.ToString();
+                guest.user_pass = "";
+                guest.user_category = context.Users_category.Where(cat => cat.user_category_name == "Guest").FirstOrDefault().user_category_id;
+                //guest.user_image = deffaultImagePath;
+                set.Add(guest);
+            }
+            context.SaveChanges();
         }
+        
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            var rez = Manager.Run();
-        }
-
+        //Event proccessing added by bigDrone
+        /// <summary>
+        /// When window is loaded, default signed profile is set to "Guest" and login window pops up.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            showProfile();
+            //run login window
+            var rezult = new UserManager.LoginUserWindow().Run();
+            //if login was not success aplication is loged under "Guest"
+            LogedUser =
+                rezult != null ?
+                rezult :
+                new MyTestDatabaseEntities().Users.Where(usr => usr.user_login.Equals("Guest")).FirstOrDefault();
+
+            RefreshProfile();
+            this.tbProfileTab.IsSelected = true;
+        }
+
+        //BigDrone:
+        /// <summary>
+        /// Create new user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var diag = new UserManager.NewUserWindow(LogedUser);
+            var rez = diag.Run();
+            if (rez != null)
+            {
+                var context = new MyTestDatabaseEntities();
+                context.Set<Users>().Add(rez);
+                context.SaveChanges();
+            }
+            this.RefreshProfile();
+        }
+        //BigDrone: Closing program prompt
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Бажаєте закрити програму?", "Підтвердіть", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                e.Cancel = true;
+        }
+
+        //BigDrone:
+        /// <summary>
+        /// Edit user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            new UserManager.EditUserWindow(null,LogedUser).Run();
+        }
+
+        //BigDrone:
+        /// <summary>
+        /// Change current profile (new login)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            LogedUser = null;
+            this.RefreshProfile();
+        }
+        //BigDrone
+        /// <summary>
+        /// Quit programm
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
     }

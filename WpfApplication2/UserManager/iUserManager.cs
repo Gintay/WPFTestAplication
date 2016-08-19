@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfileManagerLib
+namespace WpfApplication2.UserManager
 {
-    interface iManagerInterface
+    interface iUserManager
     {
         /// <summary>
-        /// Deffault Manager Method;
+        /// Deffault Manager Method
         /// </summary>
-        /// <returns>Modified User object</returns>
-        User Run();
+        /// <returns></returns>
+        Users Run();
     }
 }
