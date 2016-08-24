@@ -27,3 +27,6 @@ C:\Users\Gintay-PC\Downloads\WpfApplication4\WpfApplication2\WpfApplication2\obj
 D:\GitTestProject\WPFAplication\WpfApplication2\bin\Debug\WpfApplication2.exe.config
 D:\GitTestProject\WPFAplication\WpfApplication2\obj\Debug\WpfApplication2.exe
 D:\GitTestProject\WPFAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb
+C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\bin\Debug\WpfApplication2.exe.config
+C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.exe
+C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb

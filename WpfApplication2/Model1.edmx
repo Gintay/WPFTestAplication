@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MyBaseNameModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="answer_id" />
+          </Key>
+          <Property Name="answer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="answer_text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="right_answer" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MyBaseName.dbo.History_answer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="History_answer">
+          <Key>
+            <PropertyRef Name="test_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="answer_id" />
+          </Key>
+          <Property Name="test_id" Type="int" Nullable="false" />
+          <Property Name="question_id" Type="int" Nullable="false" />
+          <Property Name="answer_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question_main_category">
+          <Key>
+            <PropertyRef Name="main_category_question_id" />
+          </Key>
+          <Property Name="main_category_question_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="main_category_question_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="main_category_question_image" Type="image" />
+        </EntityType>
+        <EntityType Name="Question_SubCategory">
+          <Key>
+            <PropertyRef Name="question_subcategory_id" />
+          </Key>
+          <Property Name="question_subcategory_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question_subcategory_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="question_maincategory" Type="int" Nullable="false" />
+          <Property Name="question_subcategory_image" Type="image" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="question_id" />
+          </Key>
+          <Property Name="question_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question_category" Type="int" Nullable="false" />
+          <Property Name="question_level" Type="int" Nullable="false" />
+          <Property Name="question_answers" Type="int" Nullable="false" />
+          <Property Name="question_text" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Test_history">
+          <Key>
+            <PropertyRef Name="test_id" />
+          </Key>
+          <Property Name="test_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="test_category" Type="int" Nullable="false" />
+          <Property Name="test_level" Type="int" Nullable="false" />
+          <Property Name="test_date" Type="datetime" Nullable="false" />
+          <Property Name="test_rating" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_pass" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_category" Type="int" Nullable="false" />
+          <Property Name="user_birthyear" Type="int" />
+          <Property Name="user_image" Type="image" />
+        </EntityType>
+        <EntityType Name="Users_category">
+          <Key>
+            <PropertyRef Name="user_category_id" />
+          </Key>
+          <Property Name="user_category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_category_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="admin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answers_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="question_id" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Answers">
+          <End Role="Answers" Type="Self.Answers" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answers">
+              <PropertyRef Name="answer_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="question_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Test_history1">
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test_history">
+              <PropertyRef Name="test_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="test_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_SubCategory_Question_main_category">
+          <End Role="Question_main_category" Type="Self.Question_main_category" Multiplicity="1" />
+          <End Role="Question_SubCategory" Type="Self.Question_SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question_main_category">
+              <PropertyRef Name="main_category_question_id" />
+            </Principal>
+            <Dependent Role="Question_SubCategory">
+              <PropertyRef Name="question_maincategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_history_Question_SubCategory">
+          <End Role="Question_SubCategory" Type="Self.Question_SubCategory" Multiplicity="1" />
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question_SubCategory">
+              <PropertyRef Name="question_subcategory_id" />
+            </Principal>
+            <Dependent Role="Test_history">
+              <PropertyRef Name="test_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_history_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Test_history">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Users_category">
+          <End Role="Users_category" Type="Self.Users_category" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_category">
+              <PropertyRef Name="user_category_id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="user_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MyBaseNameModelStoreContainer">
+          <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question_main_category" EntityType="Self.Question_main_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question_SubCategory" EntityType="Self.Question_SubCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test_history" EntityType="Self.Test_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users_category" EntityType="Self.Users_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="History_answer" EntityType="Self.History_answer" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [History_answer].[test_id] AS [test_id], 
+    [History_answer].[question_id] AS [question_id], 
+    [History_answer].[answer_id] AS [answer_id]
+    FROM [dbo].[History_answer] AS [History_answer]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Answers_Questions" Association="Self.FK_Answers_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Answers" Association="Self.FK_History_answer_Answers">
+            <End Role="Answers" EntitySet="Answers" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Questions" Association="Self.FK_History_answer_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Test_history1" Association="Self.FK_History_answer_Test_history1">
+            <End Role="Test_history" EntitySet="Test_history" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_SubCategory_Question_main_category" Association="Self.FK_Question_SubCategory_Question_main_category">
+            <End Role="Question_main_category" EntitySet="Question_main_category" />
+            <End Role="Question_SubCategory" EntitySet="Question_SubCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_history_Question_SubCategory" Association="Self.FK_Test_history_Question_SubCategory">
+            <End Role="Question_SubCategory" EntitySet="Question_SubCategory" />
+            <End Role="Test_history" EntitySet="Test_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_history_Users1" Association="Self.FK_Test_history_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Test_history" EntitySet="Test_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Users_category" Association="Self.FK_Users_Users_category">
+            <End Role="Users_category" EntitySet="Users_category" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MyBaseNameModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="answer_id" />
+          </Key>
+          <Property Name="answer_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="answer_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="right_answer" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_Answers_Questions" FromRole="Answers" ToRole="Questions" />
+          <NavigationProperty Name="History_answer" Relationship="Self.FK_History_answer_Answers" FromRole="Answers" ToRole="History_answer" />
+        </EntityType>
+        <EntityType Name="Question_main_category">
+          <Key>
+            <PropertyRef Name="main_category_question_id" />
+          </Key>
+          <Property Name="main_category_question_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="main_category_question_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="main_category_question_image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Question_SubCategory" Relationship="Self.FK_Question_SubCategory_Question_main_category" FromRole="Question_main_category" ToRole="Question_SubCategory" />
+        </EntityType>
+        <EntityType Name="Question_SubCategory">
+          <Key>
+            <PropertyRef Name="question_subcategory_id" />
+          </Key>
+          <Property Name="question_subcategory_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question_subcategory_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="question_maincategory" Type="Int32" Nullable="false" />
+          <Property Name="question_subcategory_image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Question_main_category" Relationship="Self.FK_Question_SubCategory_Question_main_category" FromRole="Question_SubCategory" ToRole="Question_main_category" />
+          <NavigationProperty Name="Test_history" Relationship="Self.FK_Test_history_Question_SubCategory" FromRole="Question_SubCategory" ToRole="Test_history" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="question_id" />
+          </Key>
+          <Property Name="question_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question_category" Type="Int32" Nullable="false" />
+          <Property Name="question_level" Type="Int32" Nullable="false" />
+          <Property Name="question_answers" Type="Int32" Nullable="false" />
+          <Property Name="question_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_Answers_Questions" FromRole="Questions" ToRole="Answers" />
+          <NavigationProperty Name="History_answer" Relationship="Self.FK_History_answer_Questions" FromRole="Questions" ToRole="History_answer" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Test_history">
+          <Key>
+            <PropertyRef Name="test_id" />
+          </Key>
+          <Property Name="test_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="test_category" Type="Int32" Nullable="false" />
+          <Property Name="test_level" Type="Int32" Nullable="false" />
+          <Property Name="test_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="test_rating" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Question_SubCategory" Relationship="Self.FK_Test_history_Question_SubCategory" FromRole="Test_history" ToRole="Question_SubCategory" />
+          <NavigationProperty Name="History_answer" Relationship="Self.FK_History_answer_Test_history1" FromRole="Test_history" ToRole="History_answer" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Test_history_Users1" FromRole="Test_history" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_category" Type="Int32" Nullable="false" />
+          <Property Name="user_birthyear" Type="Int32" />
+          <Property Name="user_image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Test_history" Relationship="Self.FK_Test_history_Users1" FromRole="Users" ToRole="Test_history" />
+          <NavigationProperty Name="Users_category" Relationship="Self.FK_Users_Users_category" FromRole="Users" ToRole="Users_category" />
+        </EntityType>
+        <EntityType Name="Users_category">
+          <Key>
+            <PropertyRef Name="user_category_id" />
+          </Key>
+          <Property Name="user_category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="admin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Users_category" FromRole="Users_category" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="History_answer">
+          <Key>
+            <PropertyRef Name="test_id" />
+            <PropertyRef Name="question_id" />
+            <PropertyRef Name="answer_id" />
+          </Key>
+          <Property Name="test_id" Type="Int32" Nullable="false" />
+          <Property Name="question_id" Type="Int32" Nullable="false" />
+          <Property Name="answer_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_History_answer_Answers" FromRole="History_answer" ToRole="Answers" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_History_answer_Questions" FromRole="History_answer" ToRole="Questions" />
+          <NavigationProperty Name="Test_history" Relationship="Self.FK_History_answer_Test_history1" FromRole="History_answer" ToRole="Test_history" />
+        </EntityType>
+        <Association Name="FK_Answers_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="question_id" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Answers">
+          <End Role="Answers" Type="Self.Answers" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answers">
+              <PropertyRef Name="answer_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="answer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_SubCategory_Question_main_category">
+          <End Role="Question_main_category" Type="Self.Question_main_category" Multiplicity="1" />
+          <End Role="Question_SubCategory" Type="Self.Question_SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question_main_category">
+              <PropertyRef Name="main_category_question_id" />
+            </Principal>
+            <Dependent Role="Question_SubCategory">
+              <PropertyRef Name="question_maincategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_history_Question_SubCategory">
+          <End Role="Question_SubCategory" Type="Self.Question_SubCategory" Multiplicity="1" />
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question_SubCategory">
+              <PropertyRef Name="question_subcategory_id" />
+            </Principal>
+            <Dependent Role="Test_history">
+              <PropertyRef Name="test_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="question_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="question_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_answer_Test_history1">
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="1" />
+          <End Role="History_answer" Type="Self.History_answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test_history">
+              <PropertyRef Name="test_id" />
+            </Principal>
+            <Dependent Role="History_answer">
+              <PropertyRef Name="test_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Test_history_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Test_history" Type="Self.Test_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Test_history">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Users_category">
+          <End Role="Users_category" Type="Self.Users_category" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_category">
+              <PropertyRef Name="user_category_id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="user_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MyBaseNameEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Answers" EntityType="Self.Answers" />
+          <EntitySet Name="Question_main_category" EntityType="Self.Question_main_category" />
+          <EntitySet Name="Question_SubCategory" EntityType="Self.Question_SubCategory" />
+          <EntitySet Name="Questions" EntityType="Self.Questions" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Test_history" EntityType="Self.Test_history" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Users_category" EntityType="Self.Users_category" />
+          <EntitySet Name="History_answer" EntityType="Self.History_answer" />
+          <AssociationSet Name="FK_Answers_Questions" Association="Self.FK_Answers_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Answers" Association="Self.FK_History_answer_Answers">
+            <End Role="Answers" EntitySet="Answers" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_SubCategory_Question_main_category" Association="Self.FK_Question_SubCategory_Question_main_category">
+            <End Role="Question_main_category" EntitySet="Question_main_category" />
+            <End Role="Question_SubCategory" EntitySet="Question_SubCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_history_Question_SubCategory" Association="Self.FK_Test_history_Question_SubCategory">
+            <End Role="Question_SubCategory" EntitySet="Question_SubCategory" />
+            <End Role="Test_history" EntitySet="Test_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Questions" Association="Self.FK_History_answer_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_answer_Test_history1" Association="Self.FK_History_answer_Test_history1">
+            <End Role="Test_history" EntitySet="Test_history" />
+            <End Role="History_answer" EntitySet="History_answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Test_history_Users1" Association="Self.FK_Test_history_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Test_history" EntitySet="Test_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Users_category" Association="Self.FK_Users_Users_category">
+            <End Role="Users_category" EntitySet="Users_category" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MyBaseNameModelStoreContainer" CdmEntityContainer="MyBaseNameEntities">
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Answers">
+              <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+                <ScalarProperty Name="answer_text" ColumnName="answer_text" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="right_answer" ColumnName="right_answer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question_main_category">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Question_main_category">
+              <MappingFragment StoreEntitySet="Question_main_category">
+                <ScalarProperty Name="main_category_question_id" ColumnName="main_category_question_id" />
+                <ScalarProperty Name="main_category_question_name" ColumnName="main_category_question_name" />
+                <ScalarProperty Name="main_category_question_image" ColumnName="main_category_question_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question_SubCategory">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Question_SubCategory">
+              <MappingFragment StoreEntitySet="Question_SubCategory">
+                <ScalarProperty Name="question_subcategory_id" ColumnName="question_subcategory_id" />
+                <ScalarProperty Name="question_subcategory_name" ColumnName="question_subcategory_name" />
+                <ScalarProperty Name="question_maincategory" ColumnName="question_maincategory" />
+                <ScalarProperty Name="question_subcategory_image" ColumnName="question_subcategory_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Questions">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="question_category" ColumnName="question_category" />
+                <ScalarProperty Name="question_level" ColumnName="question_level" />
+                <ScalarProperty Name="question_answers" ColumnName="question_answers" />
+                <ScalarProperty Name="question_text" ColumnName="question_text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MyBaseNameModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test_history">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Test_history">
+              <MappingFragment StoreEntitySet="Test_history">
+                <ScalarProperty Name="test_id" ColumnName="test_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="test_category" ColumnName="test_category" />
+                <ScalarProperty Name="test_level" ColumnName="test_level" />
+                <ScalarProperty Name="test_date" ColumnName="test_date" />
+                <ScalarProperty Name="test_rating" ColumnName="test_rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_login" ColumnName="user_login" />
+                <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+                <ScalarProperty Name="user_category" ColumnName="user_category" />
+                <ScalarProperty Name="user_birthyear" ColumnName="user_birthyear" />
+                <ScalarProperty Name="user_image" ColumnName="user_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users_category">
+            <EntityTypeMapping TypeName="MyBaseNameModel.Users_category">
+              <MappingFragment StoreEntitySet="Users_category">
+                <ScalarProperty Name="user_category_id" ColumnName="user_category_id" />
+                <ScalarProperty Name="user_category_name" ColumnName="user_category_name" />
+                <ScalarProperty Name="admin" ColumnName="admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="History_answer">
+            <EntityTypeMapping TypeName="MyBaseNameModel.History_answer">
+              <MappingFragment StoreEntitySet="History_answer">
+                <ScalarProperty Name="test_id" ColumnName="test_id" />
+                <ScalarProperty Name="question_id" ColumnName="question_id" />
+                <ScalarProperty Name="answer_id" ColumnName="answer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
