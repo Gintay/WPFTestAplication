@@ -255,7 +255,7 @@ RenderingBias="Quality" />
                                         </StackPanel>
                                     </Grid>
                                 </Button>
-                                <Button Style="{StaticResource AdminButton}">
+                                <Button Style="{StaticResource AdminButton}" Click="Button_Click">
                                     <Grid>
                                         <StackPanel>
                                             <Image Name="AddUserButtonImage" Height="150" />

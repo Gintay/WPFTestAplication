@@ -23,11 +23,11 @@ namespace Library.UserManager
         Users EditedUser;
         Users EditorUser;
         string EditedUserCurrentLogin;
-        public EditUserWindow(Users user, Users editor)
+        public EditUserWindow(Users editedUser, Users editorUser)
         {
             InitializeComponent();
-            EditedUser = user;
-            EditorUser = editor;
+            EditedUser = editedUser;
+            EditorUser = editorUser;
         }
 
 
@@ -189,7 +189,13 @@ namespace Library.UserManager
 
         public Users Run()
         {
-            if (EditedUser == null)
+            //non admin user can edit only themselves
+            if (EditorUser.Users_category.admin != true)
+            {
+                EditedUser = EditorUser;
+            }
+                //Admins are alowed to select users to edit
+            else if (EditedUser == null)
             {
                 EditedUser = new UserManager.UserListWindow(EditorUser).Run();
                 EditedUserCurrentLogin =
@@ -197,6 +203,7 @@ namespace Library.UserManager
                     EditedUser.user_login :
                     null;
             }
+
             var rez = this.ShowDialog();
             if (rez.HasValue && rez == true)
             {

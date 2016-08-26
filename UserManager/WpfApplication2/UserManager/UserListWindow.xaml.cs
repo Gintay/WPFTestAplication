@@ -20,10 +20,10 @@ namespace Library.UserManager
     public partial class UserListWindow : Window,iUserManager
     {
         Users LogedUser;
-        public UserListWindow(Users user)
+        public UserListWindow(Users logedUser)
         {
             InitializeComponent();
-            LogedUser = user;
+            LogedUser = logedUser;
             //lbUsersList.SelectionMode = SelectionMode.Single;
         }
 
@@ -43,7 +43,7 @@ namespace Library.UserManager
         /// <summary>
         /// Implements iUserManager interface method Run
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Selected user object or null</returns>
         public Users Run()
         {
             Users selectedUser = null;

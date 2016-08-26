@@ -23,19 +23,24 @@ namespace Library.UserManager
         Users CreatedUser { set; get; }
         Users LogedUser;
 
-        public NewUserWindow(Users user)
+        public NewUserWindow(Users logedUser)
         {
             InitializeComponent();
             pbPassword.BorderThickness = new Thickness(2.0);
-            LogedUser = user;
+            LogedUser = logedUser;
         }
 
         /// <summary>
         /// inplements iUserManager interface method Run
         /// </summary>
-        /// <returns>User object if successfuly such is created, or null if otherwise</returns>
+        /// <returns>Created user object if successfuly such is created, or null if otherwise</returns>
         public Users Run()
         {
+            if (LogedUser.Users_category.admin != true)
+            {
+                MessageBox.Show(LogedUser.user_login + " не має права створювати користувачів", "Порушення доступу", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return null;
+            }
             var rez = this.ShowDialog();
             if (rez.HasValue && rez == true)
             {
