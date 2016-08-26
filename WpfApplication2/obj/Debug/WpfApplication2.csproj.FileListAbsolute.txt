@@ -30,3 +30,6 @@ D:\GitTestProject\WPFAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb
 C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\bin\Debug\WpfApplication2.exe.config
 C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.exe
 C:\Users\Pasha\Documents\Напів Стаціонар C ++\Програмування\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb
+E:\Projects\TestProject\Big\DB\WPFTestAplication\WpfApplication2\bin\Debug\WpfApplication2.exe.config
+E:\Projects\TestProject\Big\DB\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.exe
+E:\Projects\TestProject\Big\DB\WPFTestAplication\WpfApplication2\obj\Debug\WpfApplication2.pdb
