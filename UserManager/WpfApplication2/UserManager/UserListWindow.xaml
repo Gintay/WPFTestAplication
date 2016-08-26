@@ -1,0 +1,11 @@
+﻿<Window x:Class="Library.UserManager.UserListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Список користувачів" Height="394.03" Width="352.239" Background="CornflowerBlue" Loaded="Window_Loaded">
+    <Grid>
+        <ListBox x:Name="lbUsersList" HorizontalAlignment="Left" Height="284" Margin="10,10,0,0" VerticalAlignment="Top" Width="324" TabIndex="1" FontWeight="Bold" SelectionChanged="lbUsersList_SelectionChanged"/>
+        <Button x:Name="btCancel" Content="Відміна" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="274,299,0,0" Height="54" Background="White" FontWeight="Bold" Foreground="CornflowerBlue" BorderBrush="{x:Null}" TabIndex="3" ToolTip="Відміна" Click="btCancel_Click"/>
+        <Button x:Name="btSelect" Content="Обрати" HorizontalAlignment="Left" VerticalAlignment="Top" Width="125" Margin="144,299,0,0" Height="54" Background="White" FontWeight="Bold" Foreground="CornflowerBlue" BorderBrush="{x:Null}" TabIndex="2" ToolTip="Обрати користувача" Click="btSelect_Click"/>
+
+    </Grid>
+</Window>
