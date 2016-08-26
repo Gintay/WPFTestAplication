@@ -44,7 +44,7 @@ namespace Library.UserManager
             var rez = this.ShowDialog();
             if (rez.HasValue && rez == true)
             {
-                var context = new MyBaseNameEntities();
+                var context = new EntitiesDataBase();
                 CreatedUser = new Users()
                 {
                     user_login = tbLogin.Text,
@@ -80,7 +80,7 @@ namespace Library.UserManager
         /// </summary>
         private void TryToFillCategories()
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var categories = context.Set<Users_category>();
             if (categories != null && categories.Count() > 0)
             {
@@ -155,7 +155,7 @@ namespace Library.UserManager
                 MessageBox.Show("Ви не ввели жодного логіну!","Помилка!",MessageBoxButton.OK,MessageBoxImage.Stop);
                 return;
             }
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             if(context.Users.Where(user=>user.user_login == tbLogin.Text).Count()>0)
             {
                 MessageBox.Show("Користувач з таким логіном вже існує!", "Увага!", MessageBoxButton.OK, MessageBoxImage.Warning);

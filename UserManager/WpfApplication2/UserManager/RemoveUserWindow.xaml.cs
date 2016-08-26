@@ -43,7 +43,7 @@ namespace Library.UserManager
             var DeletedUser = new UserManager.UserListWindow(LogedUser).Run();
             if (MessageBox.Show("Ви дійсно бажаєте видалити " + DeletedUser.user_login + " з бази даних користувачів?", "Підтвердіть видалення!", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
             {
-                var db = new MyBaseNameEntities();
+                var db = new EntitiesDataBase();
                 db.Set<Users>().Remove(DeletedUser);
                 db.SaveChanges();
             }

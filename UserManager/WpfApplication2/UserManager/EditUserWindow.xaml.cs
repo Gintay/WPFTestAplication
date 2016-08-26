@@ -36,7 +36,7 @@ namespace Library.UserManager
         /// </summary>
         private void TryToFillCategories()
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var categories = context.Set<Users_category>();
             if (categories != null && categories.Count() > 0)
             {
@@ -142,7 +142,7 @@ namespace Library.UserManager
                 MessageBox.Show("Ви не ввели жодного логіну!", "Помилка!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             if (!tbLogin.Text.Equals(EditedUserCurrentLogin) && context.Users.Where(user => user.user_login == tbLogin.Text).Count() > 0)
             {
                 MessageBox.Show("Користувач з таким логіном вже існує!", "Увага!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -211,9 +211,9 @@ namespace Library.UserManager
                 if (!String.IsNullOrEmpty(pbPassword.Password))
                     EditedUser.user_pass = pbPassword.Password;
                 if (cbCategory.SelectedItem != null)
-                    EditedUser.user_category = new MyBaseNameEntities().Users_category.Where(category => category.user_category_name.Equals(cbCategory.SelectedItem.ToString())).FirstOrDefault().user_category_id;
+                    EditedUser.user_category = new EntitiesDataBase().Users_category.Where(category => category.user_category_name.Equals(cbCategory.SelectedItem.ToString())).FirstOrDefault().user_category_id;
                 //Save data to database
-                var db = new MyBaseNameEntities();
+                var db = new EntitiesDataBase();
                 var original = db.Users.Find(EditedUser.user_id);
                 if (original != null)
                 {
@@ -244,7 +244,7 @@ namespace Library.UserManager
             TryToFillCategories();
             TryToFillYearthOfBirth();
             chbSuperAdmin.IsChecked = false;
-            if (EditorUser.user_category == new MyBaseNameEntities().Users_category.Where(cat => cat.user_category_name.Equals("SuperAdmin")).FirstOrDefault().user_category_id)
+            if (EditorUser.user_category == new EntitiesDataBase().Users_category.Where(cat => cat.user_category_name.Equals("SuperAdmin")).FirstOrDefault().user_category_id)
             {
                 chbSuperAdmin.Opacity = 100.0;
                 chbSuperAdmin.IsEnabled = true;

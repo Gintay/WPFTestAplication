@@ -29,7 +29,7 @@ namespace Library.UserManager
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var users = context.Set<Users>();
             if (users != null && users.Count() > 0)
             {
@@ -50,7 +50,7 @@ namespace Library.UserManager
             var rez = this.ShowDialog();
             if (rez.HasValue && rez != null && lbUsersList.SelectedItems.Count == 1)
             {
-                var context = new MyBaseNameEntities();
+                var context = new EntitiesDataBase();
                 selectedUser = context.Users.Where(user => user.user_login == lbUsersList.SelectedItem.ToString()).FirstOrDefault();
             }
             else

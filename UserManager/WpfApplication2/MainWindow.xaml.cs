@@ -315,7 +315,7 @@ namespace Library
         /// </summary>
         void TryToAdDeffaultUserCategories()
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var usr_cat_count = context.Users_category.Count();
             if(usr_cat_count<1)
             {
@@ -340,7 +340,7 @@ namespace Library
         /// </summary>
         void TryToAddDeffaultUser()
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var adminsCount = context.Users.Where(usr => usr.Users_category.admin == true).Count();
             var guestsCount = context.Users.Where(usr => usr.Users_category.user_category_name == "Guest").Count();
             var set = context.Set<Users>();
@@ -385,7 +385,7 @@ namespace Library
             LogedUser =
                 rezult != null ?
                 rezult :
-                new MyBaseNameEntities().Users.Where(usr => usr.user_login.Equals("Guest")).FirstOrDefault();
+                new EntitiesDataBase().Users.Where(usr => usr.user_login.Equals("Guest")).FirstOrDefault();
 
             RefreshProfile();
             this.tbProfileTab.IsSelected = true;
@@ -403,7 +403,7 @@ namespace Library
             var rez = diag.Run();
             if (rez != null)
             {
-                var context = new MyBaseNameEntities();
+                var context = new EntitiesDataBase();
                 context.Set<Users>().Add(rez);
                 context.SaveChanges();
             }

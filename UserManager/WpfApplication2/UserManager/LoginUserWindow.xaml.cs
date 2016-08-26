@@ -46,7 +46,7 @@ namespace Library.UserManager
         /// </summary>
         private void Login()
         {
-            var context = new MyBaseNameEntities();
+            var context = new EntitiesDataBase();
             var records = context.Users.Where(usr => usr.user_login == tbLogin.Text);
             if(records.Count()>0)
             {
